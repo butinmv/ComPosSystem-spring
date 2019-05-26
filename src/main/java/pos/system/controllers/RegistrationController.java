@@ -5,9 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pos.system.dto.CompanyDTO;
+import pos.system.entities.Check;
 import pos.system.entities.Role;
+import pos.system.service.CheckService;
 import pos.system.service.CompanyService;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collections;
 
 /**
@@ -18,7 +22,7 @@ import java.util.Collections;
 @Controller
 public class RegistrationController {
 
-    private CompanyService companyService;
+    private final CompanyService companyService;
 
     @Autowired
     RegistrationController(CompanyService companyService) {
@@ -31,6 +35,9 @@ public class RegistrationController {
      */
     @GetMapping("/registration")
     public String getRegistration() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        System.out.println(cal.getTime());
         return "registration";
     }
 

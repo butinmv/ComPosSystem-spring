@@ -2,13 +2,10 @@ package pos.system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pos.system.dto.CompanyDTO;
 import pos.system.entities.Company;
 import pos.system.repo.CompanyRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional

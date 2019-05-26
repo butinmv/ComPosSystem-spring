@@ -45,10 +45,13 @@ public class Company {
     @NotNull
     private boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany (mappedBy="company", fetch=FetchType.LAZY)
+    private Set<Check> tenants;
 
     public Company() {
 

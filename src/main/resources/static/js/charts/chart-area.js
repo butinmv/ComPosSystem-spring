@@ -21,11 +21,11 @@ function params7days() {
     var sumIncome = 0;
     $.ajax({
         type: 'get',
-        url: '/api/salesTransaction/last7days',
+        url: '/api/check/getLast7Days'
     })
         .done(function (data) {
             for(var i = 0; i < data.length; i++) {
-                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholesalePrice);
+                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
                 sumIncome += parseInt(data[i].retailPrice);
             }
             document.getElementById("profith5").innerText = "Прибыль: " + sumProfit.toLocaleString() + " ₽";
@@ -39,11 +39,11 @@ function params30days() {
     var sumIncome = 0;
     $.ajax({
         type: 'get',
-        url: '/api/salesTransaction/last30days',
+        url: '/api/check/getLast30Days'
     })
         .done(function (data) {
             for(var i = 0; i < data.length; i++) {
-                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholesalePrice);
+                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
                 sumIncome += parseInt(data[i].retailPrice);
             }
             document.getElementById("profith5").innerText = "Прибыль: " + sumProfit.toLocaleString() + " ₽";
@@ -71,7 +71,7 @@ function processData() {
     if (seven) {
         $.ajax({
             type: 'get',
-            url: '/api/salesTransaction/last7days',
+            url: '/api/check/getLast7Days'
         })
             .done(function (data) {
                 var values = [];
@@ -91,8 +91,8 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
-                                values[i] += parseInt(data[j].retailPrice) - parseInt(data[j].wholesalePrice);
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
+                                values[i] += parseInt(data[j].retailPrice) - parseInt(data[j].wholePrice);
                             }
                         }
                     }
@@ -105,7 +105,7 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
                                 values[i] += parseInt(data[j].retailPrice);
                             }
                         }
@@ -119,7 +119,7 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
                                 values[i]++;
                             }
                         }
@@ -132,7 +132,7 @@ function processData() {
     if (thirty) {
         $.ajax({
             type: 'get',
-            url: '/api/salesTransaction/last30days',
+            url: '/api/check/getLast30Days'
         })
             .done(function (data) {
                 var values = [];
@@ -152,8 +152,8 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
-                                values[i] += parseInt(data[j].retailPrice) - parseInt(data[j].wholesalePrice);
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
+                                values[i] += parseInt(data[j].retailPrice) - parseInt(data[j].wholePrice);
                             }
                         }
                     }
@@ -166,7 +166,7 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
                                 values[i] += parseInt(data[j].retailPrice);
                             }
                         }
@@ -180,7 +180,7 @@ function processData() {
                         labels[i] = month[day.getMonth()] + " " + day.getDate();
                         values[i] = 0;
                         for (j = 0; j < data.length; j++) {
-                            if (getStringDate(day) === data[j].dataTime.substring(0, 10)) {
+                            if (getStringDate(day) === data[j].timeClose.substring(0, 10)) {
                                 values[i]++;
                             }
                         }
@@ -272,8 +272,8 @@ function drawChartArea(labels, dataMas, name) {
                 pointHoverBackgroundColor: "rgba(2,117,216,1)",
                 pointHitRadius: 50,
                 pointBorderWidth: 2,
-                data: dataMas,
-            }],
+                data: dataMas
+            }]
         },
         options: {
             maintainAspectRatio: false,
@@ -296,9 +296,9 @@ function drawChartArea(labels, dataMas, name) {
                         maxTicksLimit: 10
                     },
                     gridLines: {
-                        color: "rgba(0, 0, 0, .125)",
+                        color: "rgba(0, 0, 0, .125)"
                     }
-                }],
+                }]
             },
             legend: {
                 display: false

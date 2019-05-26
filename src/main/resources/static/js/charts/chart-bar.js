@@ -8,13 +8,13 @@ $(document).ready(function() {
     var amountList = [0, 0, 0, 0, 0, 0, 0];
     $.ajax({
         type: 'get',
-        url: '/api/salesTransaction/all',
+        url: '/api/check/getAll'
     })
         .done(function (data) {
             for (var i = 0; i < data.length; i++) {
-                var year = parseInt(data[i].dataTime.substring(0, 4));
-                var month = parseInt(data[i].dataTime.substring(5, 7)) - 1;
-                var day = parseInt(data[i].dataTime.substring(8, 10));
+                var year = parseInt(data[i].timeClose.substring(0, 4));
+                var month = parseInt(data[i].timeClose.substring(5, 7)) - 1;
+                var day = parseInt(data[i].timeClose.substring(8, 10));
                 var dayOfWeek = new Date(year, month, day);
                 if (dayOfWeek.getDay() === 1) {
                     dataList[0]++;
@@ -46,9 +46,9 @@ $(document).ready(function() {
                 }
             }
         for (i = 0; i < 7; i++) {
-            amountList[i] = sumList[i] / dataList[i];
+            if (dataList[i] > 0)
+                amountList[i] = sumList[i] / dataList[i];
         }
-
         drawAmount(dataList);
         drawAverage(amountList);
     });
@@ -64,8 +64,8 @@ function drawAmount(dataList) {
            datasets: [{
                label: "Количество",
                backgroundColor: "rgba(142, 94, 162, 0.8)",
-               data: dataList,
-           }],
+               data: dataList
+           }]
        },
        options: {
            scales: {
@@ -89,7 +89,7 @@ function drawAmount(dataList) {
                    gridLines: {
                        display: true
                    }
-               }],
+               }]
            },
            legend: {
                display: false
@@ -108,8 +108,8 @@ function drawAverage(amountList) {
             datasets: [{
                 label: "Среднее значение",
                 backgroundColor: "rgba(60, 186, 159, 0.8)",
-                data: amountList,
-            }],
+                data: amountList
+            }]
         },
         options: {
             scales: {
@@ -133,7 +133,7 @@ function drawAverage(amountList) {
                     gridLines: {
                         display: true
                     }
-                }],
+                }]
             },
             legend: {
                 display: false
