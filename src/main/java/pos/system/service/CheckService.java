@@ -3,6 +3,7 @@ package pos.system.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pos.system.entities.Check;
+import pos.system.entities.Company;
 import pos.system.repo.CheckRepository;
 
 import javax.transaction.Transactional;
@@ -21,19 +22,7 @@ public class CheckService {
         this.checkRepository = checkRepository;
     }
 
-    public Iterable<Check> findLast7Days() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -7);
-        return checkRepository.findLast7Days(cal.getTime());
-    }
-
-    public Iterable<Check> findLast30Days() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -30);
-        return checkRepository.findLast30Days(cal.getTime());
-    }
-
-    public Iterable<Check> findAll() {
-        return checkRepository.findAll();
+    public Iterable<Check> findAllByCompany_id(Company company) {
+        return checkRepository.findAllByCompany(company);
     }
 }

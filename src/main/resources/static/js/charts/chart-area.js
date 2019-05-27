@@ -19,36 +19,56 @@ $(document).ready(function() {
 function params7days() {
     var sumProfit = 0;
     var sumIncome = 0;
+    var checks = 0;
     $.ajax({
         type: 'get',
-        url: '/api/check/getLast7Days'
+        url: '/api/check/getAll'
     })
         .done(function (data) {
+            day = new Date();
+            var today = new Date();
             for(var i = 0; i < data.length; i++) {
-                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
-                sumIncome += parseInt(data[i].retailPrice);
+                for (var j = 0; j < 7; j++) {
+                    day.setDate(today.getDate() - 6 + j);
+                    console.log(getStringDate(day));
+                    console.log(data[i].timeClose.substring(0, 10));
+                    if (getStringDate(day) === data[i].timeClose.substring(0, 10)) {
+                        sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
+                        sumIncome += parseInt(data[i].retailPrice);
+                        checks++;
+                    }
+                }
             }
             document.getElementById("profith5").innerText = "Прибыль: " + sumProfit.toLocaleString() + " ₽";
             document.getElementById("incomeh5").innerText = "Доход: " + sumIncome.toLocaleString() + " ₽";
-            document.getElementById("checksh5").innerText = "Чеки: " + data.length.toLocaleString();
+            document.getElementById("checksh5").innerText = "Чеки: " + checks.toLocaleString();
         });
 }
 
 function params30days() {
     var sumProfit = 0;
     var sumIncome = 0;
+    var checks = 0;
     $.ajax({
         type: 'get',
-        url: '/api/check/getLast30Days'
+        url: '/api/check/getAll'
     })
         .done(function (data) {
+            day = new Date();
+            var today = new Date();
             for(var i = 0; i < data.length; i++) {
-                sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
-                sumIncome += parseInt(data[i].retailPrice);
+                for (var j = 0; j < 30; j++) {
+                    day.setDate(today.getDate() - 29 + j);
+                    if (getStringDate(day) === data[i].timeClose.substring(0, 10)) {
+                        sumProfit += parseInt(data[i].retailPrice) - parseInt(data[i].wholePrice);
+                        sumIncome += parseInt(data[i].retailPrice);
+                        checks++;
+                    }
+                }
             }
             document.getElementById("profith5").innerText = "Прибыль: " + sumProfit.toLocaleString() + " ₽";
             document.getElementById("incomeh5").innerText = "Доход: " + sumIncome.toLocaleString() + " ₽";
-            document.getElementById("checksh5").innerText = "Чеки: " + data.length.toLocaleString();
+            document.getElementById("checksh5").innerText = "Чеки: " + checks.toLocaleString();
         });
 }
 
@@ -71,7 +91,7 @@ function processData() {
     if (seven) {
         $.ajax({
             type: 'get',
-            url: '/api/check/getLast7Days'
+            url: '/api/check/getAll'
         })
             .done(function (data) {
                 var values = [];
@@ -132,7 +152,7 @@ function processData() {
     if (thirty) {
         $.ajax({
             type: 'get',
-            url: '/api/check/getLast30Days'
+            url: '/api/check/getAll'
         })
             .done(function (data) {
                 var values = [];

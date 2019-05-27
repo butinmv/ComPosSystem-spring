@@ -38,13 +38,14 @@ public class Check {
 
     @ManyToOne (cascade=CascadeType.ALL)
     @JoinColumn (name="company_id")
+    @NotNull
     private Company company;
 
     public Check() {
 
     }
 
-    public Check(@NotNull Date timeOpen, @NotNull Date timeClose, @NotNull Double wholePrice, @NotNull Double retailPrice, Company company) {
+    public Check(@NotNull Date timeOpen, @NotNull Date timeClose, @NotNull Double wholePrice, @NotNull Double retailPrice, @NotNull Company company) {
         this.timeOpen = timeOpen;
         this.timeClose = timeClose;
         this.wholePrice = wholePrice;

@@ -136,6 +136,7 @@ public class CompanyDTO {
         company.setPhone(this.phone);
         company.setActive(this.active);
         company.setRoles(this.roles);
+
         return company;
     }
 }

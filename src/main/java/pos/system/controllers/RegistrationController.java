@@ -2,6 +2,8 @@ package pos.system.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pos.system.dto.CompanyDTO;
@@ -35,9 +37,6 @@ public class RegistrationController {
      */
     @GetMapping("/registration")
     public String getRegistration() {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        System.out.println(cal.getTime());
         return "registration";
     }
 
@@ -49,10 +48,9 @@ public class RegistrationController {
      */
     @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String postRegistration(CompanyDTO companyDTO) {
-        System.out.println("Я тут был!");
-        companyDTO.setActive(true);
-        companyDTO.setRoles(Collections.singleton(Role.USER));
         try {
+            companyDTO.setActive(true);
+            companyDTO.setRoles(Collections.singleton(Role.USER));
             companyService.save(companyDTO.convertToEntity());
         } catch (Exception e) {
             return "redirect:/registration";

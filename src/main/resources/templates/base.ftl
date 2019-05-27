@@ -64,40 +64,34 @@
                     <span>Статистика</span>
                 </a>
             </li>
-            <li class="nav-item #if(title==" Персонал
-            "){active}">
+            <li class="nav-item <#if title="Персонал">active</#if>">
             <a class="nav-link" href="/staffs">
                 <i class="fa fa-address-card"></i>
                 <span>Персонал</span>
             </a>
             </li>
-            <li class="nav-item #if(title==" Должности
-            "){active}">
+            <li class="nav-item <#if title=="Должности">active</#if>">
             <a class="nav-link" href="/positions">
                 <i class="fa fa-users"></i>
                 <span>Должности</span>
             </a>
             </li>
-            <li class="nav-item #if(title==" Продукты
-            "){active}">
+            <li class="nav-item <#if title=="Продукты">active</#if>">
             <a class="nav-link" href="/products">
                 <i class="fa fa-shopping-cart"></i>
                 <span>Продукты</span></a>
             </li>
-            <li class="nav-item #if(title==" Категории
-            "){active}">
+            <li class="nav-item <#if title=="Категории">active</#if>">
             <a class="nav-link" href="/categories">
                 <i class="fa fa-list-ol"></i>
                 <span>Категории</span></a>
             </li>
-            <li class="nav-item #if(title==" Чеки
-            "){active}">
+            <li class="nav-item <#if title=="Чеки">active</#if>">
             <a class="nav-link" href="/checks">
                 <i class="fa fa-credit-card"></i>
                 <span>Чеки</span></a>
             </li>
-            <li class="nav-item #if(title==" Счета
-            "){active}">
+            <li class="nav-item <#if title=="Счета">active</#if>">
             <a class="nav-link" href="/bills">
                 <i class="fa fa-money"></i>
                 <span>Счета</span></a>
