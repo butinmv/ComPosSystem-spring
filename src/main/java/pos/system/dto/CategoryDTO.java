@@ -1,12 +1,12 @@
 package pos.system.dto;
 
+import pos.system.entities.Category;
 import pos.system.entities.Company;
-import pos.system.entities.Position;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-public class PositionDTO {
+public class CategoryDTO {
 
     @Null
     private Long id;
@@ -14,7 +14,7 @@ public class PositionDTO {
     @NotNull
     private String name;
 
-    public PositionDTO(@Null Long id, @NotNull String name) {
+    public CategoryDTO(@Null Long id, @NotNull String name) {
         this.id = id;
         this.name = name;
     }
@@ -35,7 +35,7 @@ public class PositionDTO {
         this.name = name;
     }
 
-    public Position convertToEntity(Company company) {
-        return new Position(this.name, company);
+    public Category convertToEntity(Company company) {
+        return new Category(this.name, company);
     }
 }

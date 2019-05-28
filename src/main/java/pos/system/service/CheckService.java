@@ -7,9 +7,6 @@ import pos.system.entities.Company;
 import pos.system.repo.CheckRepository;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 @Service
 @Transactional

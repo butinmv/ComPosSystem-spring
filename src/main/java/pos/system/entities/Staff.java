@@ -1,7 +1,6 @@
 package pos.system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.stereotype.Controller;
 import pos.system.dto.StaffDTO;
 
 import javax.persistence.*;

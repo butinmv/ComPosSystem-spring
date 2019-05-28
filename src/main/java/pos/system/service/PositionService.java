@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pos.system.entities.Company;
 import pos.system.entities.Position;
-import pos.system.repo.CheckRepository;
 import pos.system.repo.PositionRepository;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @Transactional

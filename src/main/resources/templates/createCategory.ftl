@@ -9,13 +9,13 @@
                 <a href="/main">Статистика </a>
             </li>
             <li class="breadcrumb-item">
-                <a href="/positions">Должности </a>
+                <a href="/categories">Категории </a>
             </li>
-            <li class="breadcrumb-item active"><#if editing=true>Редактировать <#else> Добавить</#if> должность</li>
+            <li class="breadcrumb-item active"><#if editing=true>Редактировать <#else> Добавить</#if> категорию</li>
         </ol>
 
         <!-- Page Content -->
-        <h1><#if editing=true>Редактировать <#else> Добавить</#if> должность</h1>
+        <h1><#if editing=true>Редактировать <#else> Добавить</#if> категорию</h1>
         <form method="post">
             <#if isMessage == -1>
                 <p><font color="red">${message}</font></p>
@@ -25,7 +25,8 @@
             </#if>
             <div class="form-group">
                 <label for="name">Название</label>
-                <input type="text" name="name" class="form-control" id="name" <#if editing=true>value=${position.name} </#if> required />
+                <input type="text" name="name" class="form-control" id="name"
+                       <#if editing=true>value=${category.name} </#if> required/>
             </div>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary">

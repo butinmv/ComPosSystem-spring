@@ -58,7 +58,7 @@ public class StaffController {
         Iterable<Position> positions;
         positions = positionService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         for (Position position: positions) {
-            positionsDTO.add(position.convertToDto());
+            positionsDTO.add(position.convertToDTO());
         }
         model.addAttribute("positions", positionsDTO);
         model.addAttribute("title", "Персонал");
@@ -93,7 +93,7 @@ public class StaffController {
         Iterable<Position> positions;
         positions = positionService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         for (Position position: positions) {
-            positionsDTO.add(position.convertToDto());
+            positionsDTO.add(position.convertToDTO());
         }
         model.addAttribute("positions", positionsDTO);
         Staff staff = staffService.findById(id);

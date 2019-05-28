@@ -2,18 +2,12 @@ package pos.system.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pos.system.dto.CompanyDTO;
-import pos.system.entities.Check;
 import pos.system.entities.Role;
-import pos.system.service.CheckService;
 import pos.system.service.CompanyService;
 
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Collections;
 
 /**

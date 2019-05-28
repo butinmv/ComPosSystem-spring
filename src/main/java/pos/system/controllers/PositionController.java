@@ -33,11 +33,11 @@ public class PositionController {
 
     @GetMapping("/positions")
     public String getPositions(Model model) {
-        ArrayList<PositionDTO> positionsDTO= new ArrayList<PositionDTO>();
+        ArrayList<PositionDTO> positionsDTO= new ArrayList<>();
         Iterable<Position> positions;
         positions = positionService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         for (Position position: positions) {
-            positionsDTO.add(position.convertToDto());
+            positionsDTO.add(position.convertToDTO());
         }
         model.addAttribute("title", "Должности");
         model.addAttribute("positions", positionsDTO);
@@ -67,12 +67,10 @@ public class PositionController {
     public String postCreatePosition(PositionDTO positionDTO) {
         name = positionDTO.getName();
         try{
-            positionDTO.setCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-            positionService.save(positionDTO.convertToEntity());
+            positionService.save(positionDTO.convertToEntity(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
             isMessage =  1;
         } catch (Exception e) {
             isMessage = -1;
-            return "redirect:/position/create";
         }
         return "redirect:/position/create";
     }
@@ -80,7 +78,7 @@ public class PositionController {
     @GetMapping("position/{id}/edit")
     public String getEditPosition(Model model, @PathVariable Long id) {
         Position position = positionService.findById(id);
-        PositionDTO positionDTO = position.convertToDto();
+        PositionDTO positionDTO = position.convertToDTO();
         model.addAttribute("position", positionDTO);
         model.addAttribute("title", "Должности");
         model.addAttribute("editing", true);
@@ -92,7 +90,7 @@ public class PositionController {
     }
 
     @PostMapping("position/{id}/edit")
-    public String postEditPosition(Model model, @PathVariable Long id, PositionDTO positionDTO) {
+    public String postEditPosition(@PathVariable Long id, PositionDTO positionDTO) {
         Position position = positionService.findById(id);
         position.setName(positionDTO.getName());
         try {

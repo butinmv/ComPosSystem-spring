@@ -1,36 +1,37 @@
 package pos.system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import pos.system.dto.PositionDTO;
+import pos.system.dto.CategoryDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="position",
+@Table(name="category",
         uniqueConstraints =
         @UniqueConstraint(columnNames={"name", "company_fk"}))
-public class Position {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotNull
     private String name;
 
     @ManyToOne
-    @JoinColumn (name="company_fk")
+    @JoinColumn(name="company_fk")
     @NotNull
     private Company company;
 
-    public Position() {
+//    @OneToMany
+
+    public Category() {
 
     }
 
-    public Position(@NotNull String name, @NotNull Company company) {
+    public Category(@NotNull String name, @NotNull Company company) {
         this.name = name;
         this.company = company;
     }
@@ -60,7 +61,7 @@ public class Position {
         this.company = company;
     }
 
-    public PositionDTO convertToDTO() {
-        return new PositionDTO(this.id, this.name);
+    public CategoryDTO convertToDTO() {
+        return new CategoryDTO(this.id, this.name);
     }
 }
