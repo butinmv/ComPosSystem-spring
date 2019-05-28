@@ -103,6 +103,7 @@ public class Staff {
         this.company = company;
     }
 
+    @JsonIgnore
     public Position getPosition() {
         return position;
     }

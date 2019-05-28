@@ -29,7 +29,7 @@
             <li class="breadcrumb-item">
                 <a href="/main">Статистика</a>
             </li>
-            <li class="breadcrumb-item active">Персонал</li>
+            <li class="breadcrumb-item active">Продукты</li>
         </ol>
 
         <!-- Page Content -->
@@ -37,39 +37,39 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6 col-lg-6 col-md-6">
-                    <h2>Персонал</h2>
+                    <h2>Продукты</h2>
                 </div>
                 <div class="col-sm-6 col-lg-6 col-md-6 align-self-center">
-                    <a href="staff/create" role="button" class="btn btn-success btn-sm" id="createStaff"
-                       style="float: right;"><i class="fa fa-plus"></i> Добавить работника</a>
+                    <a href="product/create" role="button" class="btn btn-success btn-sm" id="createProduct"
+                       style="float: right;"><i class="fa fa-plus"></i> Добавить продукт</a>
                 </div>
             </div>
-            <input type="text" id="searchInput" onkeyup="searchStaff()" placeholder="Поиск работника по фамилии..."
+            <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Поиск продукта по названию..."
                    class="form-control" style="margin-bottom: 20px; margin-top: 10px"/>
-            <table class="table table-borderred table-hover" id="staffsTable">
+            <table class="table table-borderred table-hover" id="productsTable">
                 <thread class="thread-light">
                     <tr>
-                        <th>Имя</th>
-                        <th>Фамилия</th>
-                        <th>Электронная почта</th>
-                        <th>PIN</th>
-                        <th>Должность</th>
+                        <th>Название</th>
+                        <th>Оптовая цена</th>
+                        <th>Наценка, %</th>
+                        <th>Розничная цена</th>
+                        <th>Категория</th>
+                        <th>Бар-код</th>
                         <th>Действие</th>
                     </tr>
                 </thread>
-
                 <tbody>
-                <#list staffs as staff>
+                <#list products as product>
                     <tr>
-                        <td>${staff.name}</td>
-                        <td>${staff.surname}</td>
-                        <td>${staff.email}</td>
-                        <td>${staff.password}</td>
-                        <td>${staff.position}</td>
+                        <td>${product.name}</td>
+                        <td>${product.wholePrice}</td>
+                        <td>${product.markup}</td>
+                        <td>${product.retailPrice}</td>
+                        <td>${product.category}</td>
+                        <td>${product.barcode}</td>
                         <td>
-                            <form method="post" action="/staff/${staff.id}/delete">
-                                <a href="/staff/${staff.id}/edit" role="button"
-                                   class="btn btn-outline-info btn-sm">Ред.</a>&nbsp
+                            <form method="post" action="/product/${product.id}/delete">
+                                <a href="/product/${product.id}/edit" role="button" class="btn btn-outline-info btn-sm">Ред.</a>&nbsp
                                 <input class="btn btn-outline-danger btn-sm" type="submit" value="Удалить"/>
                                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                             </form>
@@ -85,4 +85,4 @@
 <@logoutModal.logoutModal />
 <@commonjs.commonjs />
 
-<script src="/static/js/searchStaff.js"></script>
+<script src="/static/js/searchProduct.js"></script>

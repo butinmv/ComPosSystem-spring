@@ -46,7 +46,7 @@
         </div>
         <div class="form-group">
             <label for="position_fk">Должность</label>
-            <select name="position" class="form-control" id="position_fk" required>
+            <select name="position" class="form-control" id="position" required>
                 <#list positions as position>
                     <option value=${position.name}
                     <#if editing=true>

@@ -132,6 +132,7 @@ public class StaffController {
             staffService.delete(id);
         } catch (Exception e) {
             isMessage = -1;
+            email = staffService.findById(id).getName();
         }
         return "redirect:/staffs";
     }

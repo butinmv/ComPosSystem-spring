@@ -22,7 +22,6 @@ public class PositionController {
 
     private Integer isMessage;
     private String name;
-    private String namePosition;
 
     @Autowired
     PositionController(CompanyService companyService, PositionService positionService) {
@@ -43,7 +42,7 @@ public class PositionController {
         model.addAttribute("positions", positionsDTO);
         model.addAttribute("isMessage", isMessage);
         if (isMessage == -1)
-            model.addAttribute("message", "Должность \"" + namePosition + "\" не может быть удалена, возможно она связа с каким-то работником. Удалите всех работников с текущей должностью, после этого удалите должность.");
+            model.addAttribute("message", "Должность \"" + name + "\" не может быть удалена, возможно она связа с каким-то работником. Удалите всех работников с текущей должностью, после этого удалите должность.");
         isMessage = 0;
         return "positions";
     }
@@ -109,7 +108,7 @@ public class PositionController {
             positionService.delete(id);
         } catch(Exception e) {
             isMessage = -1;
-            namePosition = positionService.findById(id).getName();
+            name = positionService.findById(id).getName();
         }
         return "redirect:/positions";
     }

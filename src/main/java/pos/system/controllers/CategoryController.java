@@ -22,7 +22,6 @@ public class CategoryController {
 
     private Integer isMessage;
     private String name;
-    private String nameCategory;
 
     @Autowired
     CategoryController(CompanyService companyService, CategoryService categoryService) {
@@ -43,7 +42,7 @@ public class CategoryController {
         model.addAttribute("categories", categoriesDTO);
         model.addAttribute("isMessage", isMessage);
         if (isMessage == -1)
-            model.addAttribute("message", "Категория \"" + nameCategory + "\" не может быть удалена, возможно она связа с каким-то продуктом. Удалите все продукты с текущей категорией, после этого удалите категорию.");
+            model.addAttribute("message", "Категория \"" + name + "\" не может быть удалена, возможно она связа с каким-то продуктом. Удалите все продукты с текущей категорией, после этого удалите категорию.");
         isMessage = 0;
         return "categories";
     }
@@ -76,7 +75,7 @@ public class CategoryController {
     }
 
     @GetMapping("category/{id}/edit")
-    public String getEditPosition(Model model, @PathVariable Long id) {
+    public String getEditCategory(Model model, @PathVariable Long id) {
         Category category = categoryService.findById(id);
         CategoryDTO categoryDTO = category.convertToDTO();
         model.addAttribute("category", categoryDTO);
@@ -90,7 +89,7 @@ public class CategoryController {
     }
 
     @PostMapping("category/{id}/edit")
-    public String postEditPosition(@PathVariable Long id, CategoryDTO categoryDTO) {
+    public String postEditCategory(@PathVariable Long id, CategoryDTO categoryDTO) {
         Category category = categoryService.findById(id);
         category.setName(categoryDTO.getName());
         try {
@@ -104,12 +103,12 @@ public class CategoryController {
     }
 
     @PostMapping("category/{id}/delete")
-    public String postDeletePosition(@PathVariable Long id) {
+    public String postDeleteCategory(@PathVariable Long id) {
         try {
             categoryService.delete(id);
         } catch(Exception e) {
             isMessage = -1;
-            nameCategory = categoryService.findById(id).getName();
+            name = categoryService.findById(id).getName();
         }
         return "redirect:/categories";
     }
