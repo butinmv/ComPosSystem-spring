@@ -5,6 +5,7 @@ import pos.system.dto.CategoryDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name="category",
@@ -25,7 +26,9 @@ public class Category {
     @NotNull
     private Company company;
 
-//    @OneToMany
+
+    @OneToMany(mappedBy="category")
+    private Set<Product> products;
 
     public Category() {
 
@@ -59,6 +62,14 @@ public class Category {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     public CategoryDTO convertToDTO() {

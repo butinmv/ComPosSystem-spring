@@ -73,9 +73,9 @@ public class ProductController {
 
     @PostMapping("product/create")
     public String postCreateProduct(Model model, ProductDTO productDTO) {
-        System.out.println(productDTO);
         name = productDTO.getName();
-        try {productService.save(productDTO.convertToEntity(categoryService.findByName(productDTO.getCategory()), companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+        try {
+            productService.save(productDTO.convertToEntity(categoryService.findByName(productDTO.getCategory()), companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
             isMessage =  1;
         } catch (Exception e) {
             isMessage = -1;

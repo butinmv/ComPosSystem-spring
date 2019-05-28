@@ -38,4 +38,8 @@ public class CategoryService {
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
+
+    public Iterable<Category> findAll() {
+        return categoryRepository.findAll();
+    }
 }
