@@ -35,4 +35,8 @@ public class PositionService {
     public void delete(Long id) {
         positionRepository.deleteById(id);
     }
+
+    public Position findByName(String name) {
+        return positionRepository.findByName(name);
+    }
 }

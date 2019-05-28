@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pos.system.dto.PositionDTO;
 import pos.system.entities.Position;
-import pos.system.service.CheckService;
 import pos.system.service.CompanyService;
 import pos.system.service.PositionService;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Optional;
 
 @Controller
 public class PositionController {

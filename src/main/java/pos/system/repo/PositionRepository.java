@@ -12,4 +12,5 @@ public interface PositionRepository extends CrudRepository<Position, Long> {
 
     Iterable<Position> findAllByCompany(Company company);
 
+    Position findByName(String name);
 }
