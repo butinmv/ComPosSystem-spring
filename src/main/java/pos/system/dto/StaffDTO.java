@@ -83,8 +83,4 @@ public class StaffDTO {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    public Staff  convertToEntity(Position position, Company company) {
-        return new Staff(this.name, this.surname, this.email, this.password, company, position);
-    }
 }

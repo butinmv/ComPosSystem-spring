@@ -111,8 +111,4 @@ public class Staff {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    public StaffDTO convertToDTO() {
-        return new StaffDTO(this.id, this.name, this.surname, this.email, this.password, position.getName());
-    }
 }

@@ -6,24 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pos.system.entities.Check;
-import pos.system.service.CheckService;
-import pos.system.service.CompanyService;
+import pos.system.service.MainService;
 
 @RestController
 public class CheckRestController {
 
-    private final CheckService checkService;
-    private final CompanyService companyService;
+    private final MainService mainService;
 
     @Autowired
-    public CheckRestController(CheckService checkService, CompanyService companyService) {
-        this.checkService = checkService;
-        this.companyService = companyService;
+    public CheckRestController(MainService mainService) {
+        this.mainService = mainService;
     }
 
     @GetMapping
     @RequestMapping("api/check/getAll")
     public Iterable<Check> getAll() {
-        return checkService.findAllByCompany_id(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        return mainService.findAllCheckByCompany();
     }
 }

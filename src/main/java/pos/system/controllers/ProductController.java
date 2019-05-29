@@ -17,31 +17,21 @@ import java.util.ArrayList;
 
 @Controller
 public class ProductController {
-    private final ProductService productService;
-    private final CategoryService categoryService;
-    private final CompanyService companyService;
+    private final MainService mainService;
 
     private Integer isMessage;
     private String name;
 
     @Autowired
-    ProductController(ProductService productService, CategoryService categoryService, CompanyService companyService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
-        this. companyService = companyService;
+    ProductController(MainService mainService) {
+        this.mainService = mainService;
         isMessage = 0;
     }
 
     @GetMapping("/products")
     public String getProducts(Model model) {
-        ArrayList<ProductDTO> productsDTO = new ArrayList<>();
-        Iterable<Product> products;
-        products = productService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        for (Product product: products) {
-            productsDTO.add(product.convertToDTO());
-        }
         model.addAttribute("title", "Продукты");
-        model.addAttribute("products", productsDTO);
+        model.addAttribute("products", mainService.findAllProductByCompany());
         model.addAttribute("isMessage", isMessage);
         if (isMessage == -1)
             model.addAttribute("message", "Данный продукт не может быть удален.");
@@ -51,13 +41,7 @@ public class ProductController {
 
     @GetMapping("product/create")
     public String getCreateProduct(Model model) {
-        ArrayList<CategoryDTO> categoriesDTO = new ArrayList<>();
-        Iterable<Category> categories;
-        categories = categoryService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        for (Category category: categories) {
-            categoriesDTO.add(category.convertToDTO());
-        }
-        model.addAttribute("categories", categoriesDTO);
+        model.addAttribute("categories", mainService.findAllCategoryByCompany());
         model.addAttribute("title", "Продукты");
         model.addAttribute("editing", false);
         model.addAttribute("isMessage", isMessage);
@@ -75,7 +59,7 @@ public class ProductController {
     public String postCreateProduct(Model model, ProductDTO productDTO) {
         name = productDTO.getName();
         try {
-            productService.save(productDTO.convertToEntity(categoryService.findByName(productDTO.getCategory()), companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+            mainService.saveProduct(productDTO);
             isMessage =  1;
         } catch (Exception e) {
             isMessage = -1;
@@ -86,16 +70,8 @@ public class ProductController {
 
     @GetMapping("product/{id}/edit")
     public String getEditProduct(Model model, @PathVariable Long id) {
-        ArrayList<CategoryDTO> categoriesDTO = new ArrayList<>();
-        Iterable<Category> categories;
-        categories = categoryService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        for (Category category: categories) {
-            categoriesDTO.add(category.convertToDTO());
-        }
-        model.addAttribute("categories", categoriesDTO);
-        Product product = productService.findById(id);
-        ProductDTO productDTO = product.convertToDTO();
-        model.addAttribute("product", productDTO);
+        model.addAttribute("categories", mainService.findAllCategoryByCompany());
+        model.addAttribute("product", mainService.findProductById(id));
         model.addAttribute("title", "Продукты");
         model.addAttribute("editing", true);
         model.addAttribute("isMessage", isMessage);
@@ -107,15 +83,8 @@ public class ProductController {
 
     @PostMapping("product/{id}/edit")
     public String postEditProduct(Model model, @PathVariable Long id, ProductDTO productDTO) {
-        Product product = productService.findById(id);
-        product.setName(productDTO.getName());
-        product.setWholePrice(productDTO.getWholePrice());
-        product.setMarkup(productDTO.getMarkup());
-        product.setRetailPrice(productDTO.getRetailPrice());
-        product.setBarcode(productDTO.getBarcode());
-        product.setCategory(categoryService.findByName(productDTO.getCategory()));
         try {
-            productService.save(product);
+            mainService.saveProductById(id, productDTO);
             return "redirect:/products";
         } catch (Exception e) {
             isMessage = -1;
@@ -127,9 +96,10 @@ public class ProductController {
     @PostMapping("product/{id}/delete")
     public String postDeleteProduct(@PathVariable Long id) {
         try {
-            productService.delete(id);
+            mainService.deleteProduct(id);
         } catch (Exception e) {
             isMessage = -1;
+            name = mainService.findProductById(id).getName();
         }
         return "redirect:/products";
     }

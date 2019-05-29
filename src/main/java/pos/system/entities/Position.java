@@ -59,8 +59,4 @@ public class Position {
     public void setCompany(Company company) {
         this.company = company;
     }
-
-    public PositionDTO convertToDTO() {
-        return new PositionDTO(this.id, this.name);
-    }
 }

@@ -35,7 +35,4 @@ public class PositionDTO {
         this.name = name;
     }
 
-    public Position convertToEntity(Company company) {
-        return new Position(this.name, company);
-    }
 }

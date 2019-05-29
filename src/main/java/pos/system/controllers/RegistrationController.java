@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pos.system.dto.CompanyDTO;
 import pos.system.entities.Role;
-import pos.system.service.CompanyService;
+import pos.system.service.MainService;
 
 import java.util.Collections;
 
@@ -18,11 +18,11 @@ import java.util.Collections;
 @Controller
 public class RegistrationController {
 
-    private final CompanyService companyService;
+    private final MainService mainService;
 
     @Autowired
-    RegistrationController(CompanyService companyService) {
-        this.companyService = companyService;
+    RegistrationController(MainService mainService) {
+        this.mainService = mainService;
     }
 
     /**
@@ -43,9 +43,7 @@ public class RegistrationController {
     @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String postRegistration(CompanyDTO companyDTO) {
         try {
-            companyDTO.setActive(true);
-            companyDTO.setRoles(Collections.singleton(Role.USER));
-            companyService.save(companyDTO.convertToEntity());
+            mainService.saveCompany(companyDTO);
         } catch (Exception e) {
             return "redirect:/registration";
         }

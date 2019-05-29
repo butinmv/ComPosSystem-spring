@@ -1,45 +1,32 @@
 package pos.system.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pos.system.dto.PositionDTO;
-import pos.system.entities.Position;
-import pos.system.service.CompanyService;
-import pos.system.service.PositionService;
-
-import java.util.ArrayList;
+import pos.system.service.MainService;
 
 @Controller
 public class PositionController {
 
-    private final CompanyService companyService;
-    private final PositionService positionService;
+    private final MainService mainService;
 
     private Integer isMessage;
     private String name;
 
     @Autowired
-    PositionController(CompanyService companyService, PositionService positionService) {
-        this.companyService = companyService;
-        this.positionService = positionService;
+    PositionController(MainService mainService) {
+        this.mainService = mainService;
         isMessage = 0;
     }
 
     @GetMapping("/positions")
     public String getPositions(Model model) {
-        ArrayList<PositionDTO> positionsDTO= new ArrayList<>();
-        Iterable<Position> positions;
-        positions = positionService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        for (Position position: positions) {
-            positionsDTO.add(position.convertToDTO());
-        }
         model.addAttribute("title", "Должности");
-        model.addAttribute("positions", positionsDTO);
+        model.addAttribute("positions", mainService.findAllPositionByCompany());
         model.addAttribute("isMessage", isMessage);
         if (isMessage == -1)
             model.addAttribute("message", "Должность \"" + name + "\" не может быть удалена, возможно она связа с каким-то работником. Удалите всех работников с текущей должностью, после этого удалите должность.");
@@ -66,7 +53,7 @@ public class PositionController {
     public String postCreatePosition(PositionDTO positionDTO) {
         name = positionDTO.getName();
         try{
-            positionService.save(positionDTO.convertToEntity(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+            mainService.savePosition(positionDTO);
             isMessage =  1;
         } catch (Exception e) {
             isMessage = -1;
@@ -76,9 +63,7 @@ public class PositionController {
 
     @GetMapping("position/{id}/edit")
     public String getEditPosition(Model model, @PathVariable Long id) {
-        Position position = positionService.findById(id);
-        PositionDTO positionDTO = position.convertToDTO();
-        model.addAttribute("position", positionDTO);
+        model.addAttribute("position", mainService.findPositionById(id));
         model.addAttribute("title", "Должности");
         model.addAttribute("editing", true);
         model.addAttribute("isMessage", isMessage);
@@ -90,11 +75,9 @@ public class PositionController {
 
     @PostMapping("position/{id}/edit")
     public String postEditPosition(@PathVariable Long id, PositionDTO positionDTO) {
-        Position position = positionService.findById(id);
-        position.setName(positionDTO.getName());
         try {
-            positionService.save(position);
-            return "redirect:/positions";
+            mainService.savePositionById(id, positionDTO);
+            return "positions";
         } catch(Exception e) {
             isMessage = -1;
             name = positionDTO.getName();
@@ -105,10 +88,10 @@ public class PositionController {
     @PostMapping("position/{id}/delete")
     public String postDeletePosition(@PathVariable Long id) {
         try {
-            positionService.delete(id);
+            mainService.deletePosition(id);
         } catch(Exception e) {
             isMessage = -1;
-            name = positionService.findById(id).getName();
+            name = mainService.findPositionById(id).getName();
         }
         return "redirect:/positions";
     }

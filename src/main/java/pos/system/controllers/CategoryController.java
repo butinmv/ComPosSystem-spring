@@ -1,45 +1,32 @@
 package pos.system.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pos.system.dto.CategoryDTO;
-import pos.system.entities.Category;
-import pos.system.service.CategoryService;
-import pos.system.service.CompanyService;
-
-import java.util.ArrayList;
+import pos.system.service.MainService;
 
 @Controller
 public class CategoryController {
 
-    private final CompanyService companyService;
-    private final CategoryService categoryService;
+    private final MainService mainService;
 
     private Integer isMessage;
     private String name;
 
     @Autowired
-    CategoryController(CompanyService companyService, CategoryService categoryService) {
-        this.companyService = companyService;
-        this.categoryService = categoryService;
+    CategoryController(MainService mainService) {
+        this.mainService = mainService;
         isMessage = 0;
     }
 
     @GetMapping("/categories")
     public String getCategories(Model model) {
-        ArrayList<CategoryDTO> categoriesDTO= new ArrayList<>();
-        Iterable<Category> categories;
-        categories = categoryService.findAllByCompany(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        for (Category category: categories) {
-            categoriesDTO.add(category.convertToDTO());
-        }
         model.addAttribute("title", "Категории");
-        model.addAttribute("categories", categoriesDTO);
+        model.addAttribute("categories", mainService.findAllCategoryByCompany());
         model.addAttribute("isMessage", isMessage);
         if (isMessage == -1)
             model.addAttribute("message", "Категория \"" + name + "\" не может быть удалена, возможно она связа с каким-то продуктом. Удалите все продукты с текущей категорией, после этого удалите категорию.");
@@ -66,7 +53,7 @@ public class CategoryController {
     public String postCreateCategory(CategoryDTO categoryDTO) {
         name = categoryDTO.getName();
         try{
-            categoryService.save(categoryDTO.convertToEntity(companyService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+            mainService.saveCategory(categoryDTO);
             isMessage =  1;
         } catch (Exception e) {
             isMessage = -1;
@@ -76,9 +63,7 @@ public class CategoryController {
 
     @GetMapping("category/{id}/edit")
     public String getEditCategory(Model model, @PathVariable Long id) {
-        Category category = categoryService.findById(id);
-        CategoryDTO categoryDTO = category.convertToDTO();
-        model.addAttribute("category", categoryDTO);
+        model.addAttribute("category", mainService.findCategoryById(id));
         model.addAttribute("title", "Категории");
         model.addAttribute("editing", true);
         model.addAttribute("isMessage", isMessage);
@@ -90,10 +75,8 @@ public class CategoryController {
 
     @PostMapping("category/{id}/edit")
     public String postEditCategory(@PathVariable Long id, CategoryDTO categoryDTO) {
-        Category category = categoryService.findById(id);
-        category.setName(categoryDTO.getName());
         try {
-            categoryService.save(category);
+            mainService.saveCategoryById(id, categoryDTO);
             return "redirect:/categories";
         } catch(Exception e) {
             isMessage = -1;
@@ -105,10 +88,10 @@ public class CategoryController {
     @PostMapping("category/{id}/delete")
     public String postDeleteCategory(@PathVariable Long id) {
         try {
-            categoryService.delete(id);
+            mainService.deleteCategory(id);
         } catch(Exception e) {
             isMessage = -1;
-            name = categoryService.findById(id).getName();
+            name = mainService.findCategoryById(id).getName();
         }
         return "redirect:/categories";
     }
