@@ -142,14 +142,8 @@ public class MainService {
         categoryRepository.save(category);
     }
 
-    public ArrayList<CategoryDTO> findAllCategory() {
-        ArrayList<CategoryDTO> categoriesDTO = new ArrayList<>();
-        Iterable<Category> categories;
-        categories = categoryRepository.findAll();
-        for (Category category : categories) {
-            categoriesDTO.add(new CategoryDTO(category.getId(), category.getName()));
-        }
-        return categoriesDTO;
+    public Iterable<Category> findAllCategory() {
+        return categoryRepository.findAll();
     }
 
     public ArrayList<CategoryDTO> findAllCategoryByCompany() {

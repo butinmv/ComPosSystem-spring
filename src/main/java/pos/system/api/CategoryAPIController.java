@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pos.system.dto.CategoryAPI;
-import pos.system.dto.CategoryDTO;
+import pos.system.entities.Category;
 import pos.system.service.MainService;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class CategoryAPIController {
     // TODO: Сделать объект под api категории
     @GetMapping
     @RequestMapping("api/category/getAll")
-    public ArrayList<CategoryDTO> getAll() {
+    public Iterable<Category> getAll() {
         return mainService.findAllCategory();
     }
 }
