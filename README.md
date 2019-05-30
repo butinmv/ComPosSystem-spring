@@ -1,12 +1,13 @@
-ComPosSystem-spring
+**ComPosSystem-spring**
 
-Проект доступен по ссылке https://aqueous-anchorage-59043.herokuapp.com/login
+Проект доступен по [ссылке](https://aqueous-anchorage-59043.herokuapp.com/login)
 
 API:
-— для получения всех категорий и вложенных продуктов 
+* для получения всех категорий и вложенных продуктов 
 https://aqueous-anchorage-59043.herokuapp.com/api/category/getAll 
 
 Пример:
+```html
 [
     {
         "id": 3,
@@ -45,3 +46,4 @@ https://aqueous-anchorage-59043.herokuapp.com/api/category/getAll
         ]
     }
 ]
+```
