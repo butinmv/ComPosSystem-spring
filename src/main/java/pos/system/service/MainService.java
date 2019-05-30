@@ -1,6 +1,7 @@
 package pos.system.service;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -141,6 +142,16 @@ public class MainService {
         categoryRepository.save(category);
     }
 
+    public ArrayList<CategoryDTO> findAllCategory() {
+        ArrayList<CategoryDTO> categoriesDTO = new ArrayList<>();
+        Iterable<Category> categories;
+        categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            categoriesDTO.add(new CategoryDTO(category.getId(), category.getName()));
+        }
+        return categoriesDTO;
+    }
+
     public ArrayList<CategoryDTO> findAllCategoryByCompany() {
         ArrayList<CategoryDTO> categoriesDTO = new ArrayList<>();
         Iterable<Category> categories;
@@ -212,4 +223,18 @@ public class MainService {
     public Iterable<Check> findAllCheckByCompany() {
         return checkRepository.findAllByCompany(companyRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
+
+//    // Фрмирование категорий для передачи по API
+//    public String getAllCategoryAPI() {
+//        Iterable<Category> categories = categoryRepository.findAll();
+//        ArrayList<CategoryAPI> categoriesAPI = new ArrayList<>();
+//        for (Category category : categories) {
+//            ArrayList<ProductAPI> productsAPI = new ArrayList<>();
+//            for (Product product: category.getProducts()) {
+//                productsAPI.add(new ProductAPI(product.getId(), product.getName(), product.getRetailPrice()));
+//            }
+//            categoriesAPI.add(new CategoryAPI(category.getId(), category.getName(), productsAPI));
+//        }
+//        return new ObjectMapper().writeValueAsString(categories);
+//    }
 }
