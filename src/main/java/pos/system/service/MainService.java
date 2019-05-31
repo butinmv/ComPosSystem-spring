@@ -12,6 +12,7 @@ import pos.system.repo.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 public class MainService {
@@ -22,6 +23,7 @@ public class MainService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final CheckRepository checkRepository;
+    private final ProductInCheckRepository productInCheckRepository;
 
     @Autowired
     public MainService(CompanyRepository companyRepository,
@@ -29,13 +31,15 @@ public class MainService {
                        StaffRepository staffRepository,
                        CategoryRepository categoryRepository,
                        ProductRepository productRepository,
-                       CheckRepository checkRepository) {
+                       CheckRepository checkRepository,
+                       ProductInCheckRepository productInCheckRepository) {
         this.companyRepository = companyRepository;
         this.positionRepository = positionRepository;
         this.staffRepository = staffRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.checkRepository = checkRepository;
+        this.productInCheckRepository = productInCheckRepository;
     }
 
     // Бизнес-логика для работы с сущностью "company"
@@ -214,8 +218,8 @@ public class MainService {
 
     // Бизнес-логика для работы с сущностью "check"
     // TODO: сделать CheckDTO
-    public Iterable<Check> findAllCheckByCompany() {
-        return checkRepository.findAllByCompany(companyRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public Iterable<Check> findAllCheck() {
+        return checkRepository.findAll();
     }
 
 //    // Фрмирование категорий для передачи по API
@@ -231,4 +235,21 @@ public class MainService {
 //        }
 //        return new ObjectMapper().writeValueAsString(categories);
 //    }
+
+    // Бизнес-логика для работы с сущностью "productInCheck"
+    @Transactional
+    public void saveCheck(ArrayList<ProductInCheckAPI> products) {
+        Check check = checkRepository.save(new Check(new Date(), new Date(), (double)0, (double) 0));
+        double totalWholePrice = 0;
+        double totalRetailPrice = 0;
+        for (ProductInCheckAPI product: products) {
+            Product dbProduct  = productRepository.findByName(product.getName());
+
+            totalWholePrice += dbProduct.getWholePrice();
+            totalRetailPrice += dbProduct.getRetailPrice();
+            productInCheckRepository.save(new ProductInCheck(dbProduct.getWholePrice(), dbProduct.getRetailPrice(), product.getCount(), check));
+        }
+        check.setWholePrice(totalWholePrice);
+        check.setRetailPrice(totalRetailPrice);
+    }
 }

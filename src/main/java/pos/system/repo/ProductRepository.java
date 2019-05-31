@@ -9,4 +9,6 @@ import pos.system.entities.Product;
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
     public Iterable<Product> findAllByCompany(Company company);
+
+    public Product findByName(String name);
 }

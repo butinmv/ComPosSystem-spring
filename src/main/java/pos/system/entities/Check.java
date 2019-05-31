@@ -17,7 +17,6 @@ public class Check {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "number", unique = true)
-    @NotNull
     private Long number;
 
     @Column(name="timeOpen")
@@ -36,21 +35,15 @@ public class Check {
     @NotNull
     private Double retailPrice;
 
-    @ManyToOne (cascade=CascadeType.ALL)
-    @JoinColumn (name="company_id")
-    @NotNull
-    private Company company;
-
     public Check() {
 
     }
 
-    public Check(@NotNull Date timeOpen, @NotNull Date timeClose, @NotNull Double wholePrice, @NotNull Double retailPrice, @NotNull Company company) {
+    public Check(@NotNull Date timeOpen, @NotNull Date timeClose, @NotNull Double wholePrice, @NotNull Double retailPrice) {
         this.timeOpen = timeOpen;
         this.timeClose = timeClose;
         this.wholePrice = wholePrice;
         this.retailPrice = retailPrice;
-        this.company = company;
     }
 
     public Long getId() {
@@ -99,14 +92,5 @@ public class Check {
 
     public void setRetailPrice(Double retailPrice) {
         this.retailPrice = retailPrice;
-    }
-
-    @JsonIgnore
-    public Company getCompany_id() {
-        return company;
-    }
-
-    public void setCompany_id(Company company_id) {
-        this.company = company_id;
     }
 }

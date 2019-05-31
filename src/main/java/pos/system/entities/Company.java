@@ -50,9 +50,6 @@ public class Company {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany (mappedBy="company", fetch=FetchType.LAZY)
-    private Set<Check> tenants;
-
     public Company() {
 
     }
