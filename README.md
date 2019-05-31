@@ -47,3 +47,25 @@ https://aqueous-anchorage-59043.herokuapp.com/api/category/getAll
     }
 ]
 ```
+
+
+* для для отправки данных о таварах в чеке на сервер 
+https://aqueous-anchorage-59043.herokuapp.com/api/check/save
+
+Пример(тело запроса):
+```html
+[
+	{
+		"name": "Кола",
+		"count": 5
+	},
+	{
+		"name": "Фанта",
+		"count": 10
+	},
+	{
+		"name": "Чипсы Lay's",
+		"count": 7
+	}
+]
+```
